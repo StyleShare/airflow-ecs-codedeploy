@@ -21,7 +21,7 @@ resource "aws_ecs_service" "web_server_service" {
     }
 
     depends_on = [
-        aws_db_instance.metadata_db,
+        data.aws_db_instance.selected,
         aws_elasticache_cluster.celery_backend,
         aws_alb_listener.airflow_web_server,
     ]
@@ -41,7 +41,7 @@ resource "aws_ecs_service" "scheduler_service" {
     }
 
     depends_on = [
-        aws_db_instance.metadata_db,
+        data.aws_db_instance.selected,
         aws_elasticache_cluster.celery_backend,
     ]
 }
@@ -60,7 +60,7 @@ resource "aws_ecs_service" "workers_service" {
     }
 
     depends_on = [
-        aws_db_instance.metadata_db,
+        data.aws_db_instance.selected,
         aws_elasticache_cluster.celery_backend,
     ]
 }
@@ -79,7 +79,7 @@ resource "aws_ecs_service" "flower_service" {
     }
 
     depends_on = [
-        aws_db_instance.metadata_db,
+        data.aws_db_instance.selected,
         aws_elasticache_cluster.celery_backend,
     ]
 }

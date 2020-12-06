@@ -53,3 +53,7 @@ variable "tag" {
     Service = "airflow-v2"
   }
 }
+
+variable "airflow_metadata_db_password" {
+
+}

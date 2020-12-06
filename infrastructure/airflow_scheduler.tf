@@ -43,7 +43,7 @@ resource "aws_ecs_task_definition" "scheduler" {
       },
       {
         "name": "POSTGRES_HOST",
-        "value": ${replace(jsonencode(aws_db_instance.metadata_db.address), "/\"([0-9]+\\.?[0-9]*)\"/", "$1")}
+        "value": ${replace(jsonencode(data.aws_db_instance.selected.address), "/\"([0-9]+\\.?[0-9]*)\"/", "$1")}
       },
       {
         "name": "POSTGRES_PORT",
@@ -55,7 +55,7 @@ resource "aws_ecs_task_definition" "scheduler" {
       },
       {
           "name": "POSTGRES_PASSWORD",
-          "value": ${replace(jsonencode(random_string.metadata_db_password.result), "/\"([0-9]+\\.?[0-9]*)\"/", "$1")}
+          "value": ${replace(jsonencode(var.airflow_metadata_db_password), "/\"([0-9]+\\.?[0-9]*)\"/", "$1")}
       },
       {
           "name": "POSTGRES_DB",
