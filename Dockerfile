@@ -3,7 +3,6 @@
 
 FROM python:3.8.2-slim-buster
 LABEL version="1.0"
-LABEL maintainer="sangtaeahn@styleshare.kr"
 
 # Never prompts the user for choices on installation/configuration of packages
 ENV DEBIAN_FRONTEND noninteractive
