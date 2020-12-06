@@ -1,0 +1,68 @@
+version: '3.8'
+
+x-common-variables: &common-variables
+  - AIRFLOW__CORE__SQL_ALCHEMY_CONN=${AIRFLOW__CORE__SQL_ALCHEMY_CONN}
+  - AIRFLOW__CORE__EXECUTOR=${AIRFLOW__CORE__EXECUTOR}
+  - AIRFLOW__CELERY__BROKER_URL=${AIRFLOW__CELERY__BROKER_URL}
+  - AIRFLOW__CELERY__RESULT_BACKEND=${AIRFLOW__CELERY__RESULT_BACKEND}
+  - AIRFLOW__FERNET_KEY=${AIRFLOW__FERNET_KEY}
+
+
+services:
+  postgres:
+    image: postgres:12-alpine
+    environment:
+      - POSTGRES_USER=airflow
+      - POSTGRES_PASSWORD=airflow
+      - POSTGRES_DB=airflow
+  redis:
+    image: 'redis:5.0.5'
+    command: redis-server --requirepass redispass
+  scheduler:
+    image: apache/airflow:1.10.13-python3.8
+    command: scheduler
+    restart: always
+    depends_on:
+      - postgres
+    environment: *common-variables
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+  webserver:
+    image: apache/airflow:1.10.13-python3.8
+    entrypoint: scripts/entrypoint.sh
+    restart: always
+    depends_on:
+      - postgres
+      - scheduler
+    environment: *common-variables
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./scripts:/opt/airflow/scripts
+    ports:
+      - "8080:8080"
+  worker:
+    image: apache/airflow:1.10.13-python3.8
+    restart: always
+    deploy:
+      replicas: 3
+    depends_on:
+      - scheduler
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./scripts:/opt/airflow/scripts
+    command: worker
+
+  flower:
+    image: apache/airflow:1.10.13-python3.8
+    restart: always
+    depends_on:
+      - redis
+    environment:
+      - EXECUTOR=Celery
+      - REDIS_PASSWORD=redispass
+    ports:
+      - "5555:5555"
+    command: flower
