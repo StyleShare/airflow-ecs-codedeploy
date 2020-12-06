@@ -72,5 +72,5 @@
 //
 //
 data "aws_db_instance" "selected" {
-    db_instance_identifier = "growth-staging"
+    db_instance_identifier = var.airflow_metadata_db_identifier
 }
