@@ -2,9 +2,9 @@ export AWS_DEFAULT_REGION ?= ap-northeast-2
 export IMAGE_VERSION ?= $(shell git rev-parse HEAD)
 
 local-compose-up:
-	sh scripts/local-compose.sh
+	sh scripts/local-compose.sh $(BUCKET_NAME) $(KEY_NAME) $(ENV_FILE)
 local-compose-down:
-	sh scripts/local-compose-down.sh
+	sh scripts/local-compose-down.sh $(BUCKET_NAME) $(KEY_NAME) $(ENV_FILE)
 local-docker-build:
 	docker build -t airflow-ecs .
 staging-ecr-deploy:
