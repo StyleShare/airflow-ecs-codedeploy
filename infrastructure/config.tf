@@ -46,10 +46,9 @@ variable "subnet_public_filter" {
   default = ""
 }
 
-variable "tag" {
-  default = {
-    Manager = "sangtaeahn@styleshare.kr"
-    Team    = "Growth"
-    Service = "airflow-v2"
-  }
+variable "airflow_metadata_db_password" {
+  default = ""
+}
+variable "airflow_metadata_db_identifier" {
+  default = ""
 }

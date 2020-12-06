@@ -26,8 +26,8 @@ services:
       - postgres
     environment: *common-variables
     volumes:
-      - ./dags:/opt/airflow/dags
-      - ./logs:/opt/airflow/logs
+      - ./dags:/usr/local/airflow/dags
+      - ./logs:/usr/local/airflow/logs
   webserver:
     image: apache/airflow:1.10.13-python3.8
     entrypoint: scripts/entrypoint.sh
@@ -37,9 +37,9 @@ services:
       - scheduler
     environment: *common-variables
     volumes:
-      - ./dags:/opt/airflow/dags
-      - ./logs:/opt/airflow/logs
-      - ./scripts:/opt/airflow/scripts
+      - ./dags:/usr/local/airflow/dags
+      - ./logs:/usr/local/airflow/logs
+      - ./scripts:/usr/local/airflow/scripts
     ports:
       - "8080:8080"
   worker:
@@ -50,9 +50,9 @@ services:
     depends_on:
       - scheduler
     volumes:
-      - ./dags:/opt/airflow/dags
-      - ./logs:/opt/airflow/logs
-      - ./scripts:/opt/airflow/scripts
+      - ./dags:/usr/local/airflow/dags
+      - ./logs:/usr/local/airflow/logs
+      - ./scripts:/usr/local/airflow/scripts
     command: worker
 
   flower:
