@@ -6,6 +6,7 @@ x-common-variables: &common-variables
   - AIRFLOW__CELERY__BROKER_URL=${AIRFLOW__CELERY__BROKER_URL}
   - AIRFLOW__CELERY__RESULT_BACKEND=${AIRFLOW__CELERY__RESULT_BACKEND}
   - AIRFLOW__FERNET_KEY=${AIRFLOW__FERNET_KEY}
+  - AIRFLOW__CORE__LOAD_EXAMPLES=${AIRFLOW__CORE__LOAD_EXAMPLES}
 
 
 services:
@@ -49,6 +50,7 @@ services:
       replicas: 3
     depends_on:
       - scheduler
+    environment: *common-variables
     volumes:
       - ./dags:/usr/local/airflow/dags
       - ./logs:/usr/local/airflow/logs
